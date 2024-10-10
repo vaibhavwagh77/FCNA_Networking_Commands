@@ -1,0 +1,34 @@
+sudo apt-get install build-essential libelf-dev cmake
+
+sudo apt-get install libibverbs1 libibverbs-dev librdmacm1 \
+librdmacm-dev rdmacm-utils ibverbs-utils
+
+sudo modprobe ib_core
+sudo modprobe rdma_ucm
+
+
+sudo lsmod | grep rdma 
+
+sudo apt-get install build-essential cmake gcc libudev-dev libnl-3-dev \
+libnl-route-3-dev ninja-build pkg-config valgrind
+
+sudo modprobe siw
+
+
+sudo lsmod | grep siw
+
+
+
+ls /dev/infiniband 
+
+sudo rdma link add siw0 type siw netdev wlp3s0
+sudo rdma link add siw_loop type siw netdev lo
+
+ibv_devices
+
+
+ibv_devinfo
+
+rping -s -a <ip_interface>
+
+rping -c -a <ip_interface> -v 
