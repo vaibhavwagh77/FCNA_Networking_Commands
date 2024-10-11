@@ -1,0 +1,139 @@
+sudo apt update
+sudo apt upgrade -y
+sudo apt install -y ganglia-webfrontend gmetad gmond
+sudo nano /etc/ganglia/gmond.conf
+
+cluster {
+    name = "My Cluster"
+    owner = "Your Name"
+    latlong = "0,0"
+    url = "http://localhost/ganglia"
+}
+udp_send_channel {
+    host = "127.0.0.1"
+    port = 8649
+    ttl = 1
+}
+
+udp_recv_channel {
+    port = 8649
+    ttl = 1
+}
+
+
+sudo nano /etc/ganglia/gmetad.conf
+data_source "My Cluster" 127.0.0.1:8649
+
+history = 86400  # Store data for 1 day
+
+sudo nano /usr/share/ganglia/webfrontend/ganglia/conf.php
+
+$ganglia_url = "http://localhost/ganglia";
+
+sudo systemctl start gmond
+sudo systemctl enable gmond
+
+sudo systemctl start gmetad
+sudo systemctl enable gmetad
+
+
+
+
+
+sudo apt update
+sudo apt install openssh-server
+
+
+
+ssh-keygen -t rsa
+
+
+ssh-copy-id username@10.0.0.2
+
+
+ssh username@10.0.0.2
+
+
+on both nodes
+sudo apt install openmpi-bin openmpi-common libopenmpi-dev -y
+sudo nano /etc/hosts
+10.0.0.1  master
+10.0.0.2  worker
+
+
+on master
+sudo apt install ganglia-monitor gmetad ganglia-webfrontend -y
+sudo nano /etc/ganglia/gmetad.conf
+data_source "mycluster" 10.0.0.1
+sudo ln -s /usr/share/ganglia-webfrontend /var/www/html/ganglia
+sudo systemctl restart apache2
+
+on worker
+sudo apt install ganglia-monitor -y
+sudo nano /etc/ganglia/gmond.conf
+
+cluster {
+  name = "mycluster"
+}
+
+udp_send_channel {
+  host = 10.0.0.1
+  port = 8649
+}
+
+udp_recv_channel {
+  port = 8649
+}
+
+on both nodes
+sudo systemctl restart ganglia-monitor -y
+
+on master
+sudo systemctl restart gmetad
+
+http://10.0.0.1/ganglia
+
+
+
+
+sudo apt install python3-pip
+pip3 install mpi4py
+
+
+
+nano mpi_hello.py
+
+# Name: mpi_hello.py
+# Purpose: Simple MPI Hello World example in Python using mpi4py
+
+
+from mpi4py import MPI
+
+# Initialize the MPI environment
+comm = MPI.COMM_WORLD
+
+# Get the number of processes
+size = comm.Get_size()
+
+# Get the rank (ID) of the current process
+rank = comm.Get_rank()
+
+# Print message from each process
+print(f"Hello from rank {rank} out of {size} processors")
+
+# Finalize the MPI environment
+MPI.Finalize()
+
+
+nano hosts
+
+
+master slots=1
+worker slots=1
+
+run across both vm
+mpirun -np 2 --hostfile hosts python3 mpi_hello.py
+
+
+
+

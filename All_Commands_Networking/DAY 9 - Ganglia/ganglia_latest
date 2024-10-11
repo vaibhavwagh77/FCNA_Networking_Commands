@@ -1,0 +1,54 @@
+sudo apt-get install apache2
+
+
+sudo systemctl start apache2.service
+
+sudo systemctl enable apache2.service
+
+sudo apt-get install software-properties-common
+
+sudo add-apt-repository ppa:ondrej/php
+
+sudo apt-get install php7.2 libapache2-mod-php7.2 php7.2-common php7.2-gmp php7.2-curl
+
+sudo apt-get install php7.2-intl php7.2-mbstring php7.2-xmlrpc php7.2-mysql php7.2-gd
+
+sudo apt-get install php7.2-xml php7.2-cli php7.2-zip
+
+sudo systemctl restart apache2.service
+
+sudo apt update
+
+sudo apt-get install ganglia-monitor rrdtool gmetad ganglia-webfrontend
+
+
+
+
+sudo systemctl start ganglia-monitor.service
+
+sudo systemctl enable ganglia-monitor.service
+
+sudo systemctl status ganglia-monitor.service
+
+sudo gedit /etc/ganglia/gmond.conf
+
+sudo cp /etc/ganglia-webfrontend/apache.conf /etc/apache2/sites-enabled/ganglia.conf
+
+sudo systemctl restart ganglia-monitor
+
+sudo systemctl restart gmetad
+
+sudo systemctl restart apache2
+
+
+sudo apt update it is normally for us
+
+sudo apt-get install ganglia-monitor
+
+Then go to gmond.conf file by running “sudo gedit /etc/ganglia/gmond.conf” and delete mcast_join write host instead of it and define its value as “ganglia-localhost”.
+
+
+
+sudo systemctl restart ganglia-monitor.service
+
+sudo systemctl start ganglia-monitor.service
